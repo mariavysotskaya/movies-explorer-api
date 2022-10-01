@@ -31,9 +31,9 @@ app.use(require('./middlewares/rateLimiter'));
 app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === 'production') {
-  mongoose.connect(process.env.mongoUri);
+  mongoose.connect(process.env.MONGO_URI);
 } else {
-  mongoose.connect(config.mongoUri);
+  mongoose.connect(config.MONGO_URI_DEV);
 }
 
 app.use(requestLogger);

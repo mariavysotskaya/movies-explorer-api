@@ -1,6 +1,6 @@
 const config = {
   PORT: 3000,
-  mongoUri: 'mongodb://localhost:27017/moviesdb',
+  MONGO_URI_DEV: 'mongodb://localhost:27017/moviesdb',
   JWT_DEV_SECRET: 'dev-secret-key',
 };
 
