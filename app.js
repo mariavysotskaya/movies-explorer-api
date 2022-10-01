@@ -3,11 +3,26 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const config = require('./config/default');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 require('dotenv').config();
 
 const app = express();
+
+const options = {
+  origin: [
+    'http://localhost:3000',
+    'https://movieget.nomoredomains.icu',
+    'http://movieget.nomoredomains.icu',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+};
+
+app.use('*', cors(options));
 
 app.use(helmet());
 
