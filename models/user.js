@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    default: 'Мария',
+    required: true,
     minlength: [2, 'Значение должно быть больше 2 символов'],
     maxlength: [30, 'Значение должно быть меньше 30 символов'],
   },
