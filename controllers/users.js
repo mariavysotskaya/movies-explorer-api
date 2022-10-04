@@ -96,6 +96,10 @@ const updateUser = (req, res, next) => {
         next(new DataError('Переданы невалидные значения'));
         return;
       }
+      if (err.code === 11000) {
+        next(new ConflictError('Указанный email уже используется'));
+        return;
+      }
       next(err);
     });
 };
