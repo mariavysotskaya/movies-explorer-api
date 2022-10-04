@@ -14,29 +14,25 @@ const options = { new: true, runValidators: true };
 const createUser = (req, res, next) => {
   const { email, password, name } = req.body;
 
-  User.findOne({ email })
-    .then((user) => {
-      if (user) {
-        throw new ConflictError('Такой пользователь уже существует');
-      } else {
-        bcrypt.hash(password, 10)
-          .then((hash) => {
-            User.create({ email, password: hash, name })
-              .then((data) => res.status(201).send({
-                _id: data._id,
-                email: data.email,
-                name: data.name,
-              }))
-              .catch((err) => {
-                if (err.name === 'ValidationError') {
-                  next(new DataError('Переданы невалидные значения'));
-                  return;
-                }
-                next(err);
-              });
-          })
-          .catch(next);
-      }
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+      User.create({ email, password: hash, name })
+        .then((data) => res.status(201).send({
+          _id: data._id,
+          email: data.email,
+          name: data.name,
+        }))
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            next(new DataError('Переданы невалидные значения'));
+            return;
+          }
+          if (err.code === 11000) {
+            next(new ConflictError('Пользователь с указанным email уже существует'));
+            return;
+          }
+          next(err);
+        });
     })
     .catch(next);
 };
